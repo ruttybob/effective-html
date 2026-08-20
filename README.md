@@ -93,12 +93,3 @@ The skills separate creative freedom from reliability:
 Detailed guidance lives only where it is needed. The broad `html` skill routes the work, `design-artifact` supplies optional creative direction, and specialist skills own fidelity and behavior. Each skill remains independently usable.
 
 This project was inspired by Thariq Shihipar's [The unreasonable effectiveness of HTML](https://thariqs.github.io/html-effectiveness).
-
-<p align="center">
-  <a href="https://github.com/plannotator/tot">
-    <img src="./use-tot.svg" width="300" alt="Share HTML with tot">
-  </a>
-</p>
-<p align="center">
-Create a shareable link for an HTML file with <a href="https://github.com/plannotator/tot">tot</a>.
-</p>
