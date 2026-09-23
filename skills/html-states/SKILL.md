@@ -1,5 +1,6 @@
 ---
 name: html-states
+disable-model-invocation: true
 description: Direct-invocation specialist for self-contained HTML state galleries — every state of one screen or component as labeled frozen frames stacked in a single file for side-by-side review. Use when the user explicitly invokes html-states or the broad html skill routes a state-gallery request here ("show all states", empty/loading/error/ideal of one screen, states side by side). Do not use for click-through flows or transition feel; html-prototype owns those. Do not activate independently from a general request.
 ---
 

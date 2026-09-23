@@ -1,5 +1,6 @@
 ---
 name: design-artifact
+disable-model-invocation: true
 description: Design principles and creative direction for building HTML artifacts — pages, reports, plans, landing pages, demos, decks, and small tools. Use when creating or restyling any visual HTML deliverable and deciding its palette, type pairing, layout, theming, or overall register, or when the output must not look generically AI-generated.
 ---
 
