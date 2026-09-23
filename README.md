@@ -33,7 +33,7 @@ Render and annotate local HTML with <a href="https://github.com/backnotprop/plan
 
 ## Skill references
 
-The repo includes six optional skills for pragmatic visual artifacts.
+The repo includes seven optional skills for pragmatic visual artifacts.
 
 | Skill | Use it for |
 | --- | --- |
@@ -41,6 +41,7 @@ The repo includes six optional skills for pragmatic visual artifacts.
 | [`design-artifact`](skills/design-artifact/SKILL.md) | Subject-specific creative direction for any HTML artifact without imposing a reusable house style |
 | [`html-wireframe`](skills/html-wireframe/SKILL.md) | Low-fidelity layout directions that test content, hierarchy, navigation, flows, and responsive structure |
 | [`html-prototype`](skills/html-prototype/SKILL.md) | Working prototypes with realistic states, interaction, keyboard support, and responsive behavior |
+| [`html-states`](skills/html-states/SKILL.md) | State galleries — every state of one screen or component as labeled frozen frames in a single file for side-by-side review |
 | [`html-plan`](skills/html-plan/SKILL.md) | Plans, roadmaps, rollouts, and implementation sequences that preserve source commitments |
 | [`html-diagram`](skills/html-diagram/SKILL.md) | Architecture, sequence, process, state, hierarchy, timeline, and system diagrams |
 
@@ -62,6 +63,7 @@ npx skills add plannotator/effective-html --list
 npx skills add plannotator/effective-html --skill design-artifact
 npx skills add plannotator/effective-html --skill html-wireframe
 npx skills add plannotator/effective-html --skill html-prototype
+npx skills add plannotator/effective-html --skill html-states
 ```
 
 ### Claude Code plugin
@@ -86,6 +88,7 @@ The skills separate creative freedom from reliability:
 - `design-artifact` provides a reusable design process without prescribing a reusable look.
 - Wireframes stay intentionally unfinished so reviewers focus on structure.
 - Prototypes implement one credible flow and its relevant states.
+- State galleries freeze one component in every reachable state so consistency stays reviewable side by side.
 - Plans preserve source commitments.
 - Diagrams choose a visual model and rendering method that fit the relationship being explained.
 - Every artifact is responsive, accessible, self-contained, and verified in a browser.

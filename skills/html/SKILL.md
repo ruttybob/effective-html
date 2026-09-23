@@ -17,6 +17,7 @@ Use the narrowest skill that owns the main review question:
   specialist that owns fidelity, structure, or behavior.
 - Read and follow [`html-wireframe`](../html-wireframe/SKILL.md) when structure, information hierarchy, navigation, or task flow is still unsettled. It should remain visibly low fidelity and may compare two or three layout directions.
 - Read and follow [`html-prototype`](../html-prototype/SKILL.md) when the user needs a polished mockup or a working interactive flow. A mockup is the static fidelity mode inside that skill.
+- Read and follow [`html-states`](../html-states/SKILL.md) when the deliverable is every state of one screen or component shown together for side-by-side review — a state gallery.
 - Read and follow [`html-plan`](../html-plan/SKILL.md) when the artifact is primarily a plan, roadmap, implementation sequence, or rollout document whose source commitments must remain easy to verify.
 - Read and follow [`html-diagram`](../html-diagram/SKILL.md) when relationships, sequence, topology, state, hierarchy, or system behavior are the main content.
 - Continue with `html` for reports, explainers, presentations, landing pages, data stories, tools, and mixed artifacts that do not have a clearer owner.

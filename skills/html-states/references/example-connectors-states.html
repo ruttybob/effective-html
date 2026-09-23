@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Integrations — connector card states</title>
+<style>
+  /* Design language: plannotator/effective-html examples/release-readiness (Atlas).
+     Paper + graph-grid canvas, Georgia display, mono kickers with rule dashes,
+     night surfaces with lime, red/blue functional tints, stamp accents. */
+  :root {
+    color-scheme: light;
+    --paper: #fbfaf6;
+    --surface: #f2f0e8;
+    --canvas: #e9e7df;
+    --line: #cbc8bd;
+    --ink: #17211f;
+    --muted: #656d68;
+    --faint: #999d98;
+    --night: #172724;
+    --lime: #b9ea73;
+    --lime-dark: #315c33;
+    --red: #b8442e;
+    --red-soft: #fae5dc;
+    --blue: #3156cd;
+    --blue-soft: #e5eafe;
+    --focus: #214dd0;
+    --shadow: rgba(29, 38, 35, 0.13);
+  }
+  * { box-sizing: border-box; }
+  html { min-width: 320px; background: var(--canvas); }
+  body {
+    margin: 0;
+    background:
+      linear-gradient(rgba(23, 33, 31, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23, 33, 31, 0.035) 1px, transparent 1px),
+      var(--canvas);
+    background-size: 22px 22px;
+    color: var(--ink);
+    font: 15px/1.5 Arial, Helvetica, sans-serif;
+    padding-bottom: 56px;
+  }
+  button { font: inherit; cursor: pointer; }
+  :is(button, a):focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+  .banner {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 34px; padding: 7px 16px;
+    background: var(--blue); color: #fff;
+    font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+  }
+  .banner::before { content: ""; width: 7px; height: 7px; border: 1px solid currentColor; transform: rotate(45deg); }
+
+  .wrap { width: min(680px, calc(100% - 32px)); margin: 22px auto 0; }
+
+  /* ── Intro: invariants ─────────────────────────────── */
+  .intro {
+    border: 1px solid rgba(23, 33, 31, 0.4); border-radius: 18px;
+    background: var(--paper); box-shadow: 0 28px 70px var(--shadow);
+    padding: clamp(24px, 5vw, 40px);
+  }
+  .stamp {
+    display: inline-block; padding: 10px 14px; margin-bottom: 18px;
+    border: 3px double var(--night); color: var(--night);
+    font: 900 11px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.16em; text-transform: uppercase; text-align: center;
+    transform: rotate(-2deg);
+  }
+  .stamp span { display: block; margin-top: 4px; font-size: 9px; letter-spacing: 0.1em; }
+  .intro h1 {
+    margin: 0; font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 6vw, 52px); font-weight: 500;
+    letter-spacing: -0.06em; line-height: 0.95;
+  }
+  .intro .lede { margin: 16px 0 0; max-width: 560px; color: var(--muted); font-size: 15px; }
+  .invariants { margin: 20px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .invariants li { position: relative; padding-left: 20px; color: var(--ink); font-size: 13.5px; }
+  .invariants li::before { content: ""; position: absolute; left: 0; top: 7px; width: 12px; height: 3px; background: var(--lime-dark); }
+
+  /* ── Sequence strips ───────────────────────────────── */
+  .sequence { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 20px 0 0; }
+  .sequence .tag {
+    color: var(--muted);
+    font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.06em; text-transform: uppercase; width: 100%;
+  }
+  .sequence .chip {
+    min-height: 30px; display: inline-flex; align-items: center; padding: 5px 11px;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--ink); font-size: 12.5px; font-weight: 700;
+  }
+  .sequence i { font-style: normal; color: var(--faint); font-size: 11.5px; }
+
+  /* ── Axis group headings ───────────────────────────── */
+  .axis { width: min(680px, calc(100% - 32px)); margin: 34px auto 0; }
+  .axis-head {
+    display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 14px;
+    color: var(--muted);
+    font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .axis-head .rule { width: 26px; height: 3px; background: var(--faint); }
+  .axis[data-tone="degraded"] .rule { background: var(--red); }
+  .axis[data-tone="context"] .rule { background: var(--blue); }
+  .axis[data-tone="data"] .rule { background: var(--line); }
+
+  /* ── Frames ────────────────────────────────────────── */
+  .frame { margin: 0 0 22px; }
+  .frame-head { display: flex; align-items: baseline; gap: 10px; margin: 0 2px 8px; }
+  .num {
+    display: grid; place-items: center; width: 22px; height: 22px; flex: none;
+    background: var(--night); color: var(--lime);
+    font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    transform: rotate(-3deg); align-self: center;
+  }
+  .frame-head h2 { margin: 0; font-size: 13.5px; font-weight: 800; letter-spacing: -0.01em; }
+  .explain { margin-left: auto; color: var(--faint); font-size: 11.5px; text-align: right; }
+
+  /* ── The connector card, one component, many states ── */
+  .card {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px;
+    align-items: center; min-height: 108px;
+    border: 1px solid rgba(23, 33, 31, 0.4); border-radius: 14px;
+    background: var(--paper); box-shadow: 0 12px 34px var(--shadow);
+    padding: 16px 18px;
+  }
+  .glyph {
+    display: grid; place-items: center; width: 36px; height: 36px; flex: none;
+    border-radius: 9px; background: var(--brand, var(--night));
+    color: #fff; font: 700 15px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .meta { min-width: 0; }
+  .meta h3 { margin: 0; font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
+  .meta .desc { margin: 2px 0 0; color: var(--muted); font-size: 12.5px; }
+  .status { display: flex; align-items: center; gap: 8px; margin-top: 9px; min-height: 16px; }
+  .status .rule { width: 18px; height: 3px; flex: none; background: var(--faint); }
+  .status span {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: var(--muted);
+    font: 700 10.5px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .card .act { display: grid; gap: 6px; justify-items: end; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 38px; padding: 8px 14px;
+    border: 1px solid var(--line); border-radius: 5px;
+    background: var(--paper); color: var(--ink); font-weight: 700; font-size: 13.5px;
+  }
+  .btn:hover:not(:disabled) { border-color: var(--night); }
+  .btn.primary { border-color: var(--night); background: var(--night); color: #fff; }
+  .btn.danger { color: var(--red); }
+  .btn:disabled { border-color: var(--line); background: var(--surface); color: var(--faint); cursor: not-allowed; }
+
+  /* state: available */
+  /* (base card is the available state: faint rule, ghost primary CTA) */
+
+  /* state: authorizing */
+  .card.is-authorizing { border-color: var(--blue); }
+  .card.is-authorizing .status .rule { background: var(--blue); }
+  .spinner {
+    width: 13px; height: 13px; flex: none; border-radius: 50%;
+    border: 2px solid var(--blue-soft); border-top-color: var(--blue);
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* state: syncing */
+  .card.is-syncing .status .rule { background: var(--blue); }
+  .progress { margin-top: 8px; height: 5px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); overflow: hidden; }
+  .progress i { display: block; height: 100%; width: 38%; background: var(--blue); animation: nudge 2.4s ease-in-out infinite; }
+  @keyframes nudge { 0%, 100% { width: 36%; } 50% { width: 41%; } }
+
+  /* state: connected */
+  .card.is-connected .status .rule { background: var(--lime-dark); }
+  .card.is-connected .status span { color: var(--lime-dark); }
+  .card.is-connected .glyph { outline: 2px solid var(--lime-dark); outline-offset: 2px; }
+
+  /* state: reauth / paused (degraded, red family) */
+  .card.is-reauth, .card.is-paused { border-color: var(--red); }
+  .card.is-reauth .status .rule, .card.is-paused .status .rule { background: var(--red); }
+  .card.is-reauth .status span, .card.is-paused .status span { color: var(--red); }
+  .card.is-reauth { background: linear-gradient(0deg, rgba(184, 68, 46, 0.04), rgba(184, 68, 46, 0.04)), var(--paper); }
+
+  /* state: disabled by admin (context) */
+  .card.is-disabled { border-style: dashed; border-color: var(--line); box-shadow: none; background: var(--surface); }
+  .card.is-disabled .glyph { filter: grayscale(1); opacity: 0.55; }
+  .card.is-disabled .meta h3, .card.is-disabled .meta .desc { color: var(--muted); }
+  .card.is-disabled .status span { color: var(--faint); }
+
+  /* state: loading (data) */
+  .card.is-loading { box-shadow: none; }
+  .skel { border-radius: 4px; background: linear-gradient(90deg, var(--surface) 25%, #e9e6db 45%, var(--surface) 65%); background-size: 220% 100%; animation: shimmer 1.5s ease-in-out infinite; }
+  @keyframes shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+  .card.is-loading .glyph { background: var(--surface); }
+  .card.is-loading .skel.name { height: 14px; width: 58%; margin-top: 2px; }
+  .card.is-loading .skel.line { height: 9px; margin-top: 8px; }
+  .card.is-loading .skel.line.w2 { width: 72%; }
+  .card.is-loading .skel.line.w3 { width: 41%; margin-top: 12px; }
+  .card.is-loading .btn { visibility: hidden; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner, .progress i, .skel { animation: none; }
+    .progress i { width: 38%; }
+    .skel { background: var(--surface); }
+  }
+  @media (max-width: 560px) {
+    .explain { display: none; }
+    .card { grid-template-columns: auto minmax(0, 1fr); }
+    .card .act { grid-column: 2; justify-items: start; }
+  }
+
+  /* ── Foot ──────────────────────────────────────────── */
+  .foot {
+    width: min(680px, calc(100% - 32px)); margin: 30px auto 0;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface); padding: 18px 20px;
+    font-size: 12.5px; color: var(--muted);
+  }
+  .foot h2 { margin: 0 0 8px; font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+  .foot dl { margin: 0; display: grid; gap: 6px; }
+  .foot dt { color: var(--ink); font-weight: 700; display: inline; }
+  .foot dd { margin: 0 0 0 0; display: inline; }
+  .foot .prod { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<div class="banner">Atlas Integrations · connector card · state gallery</div>
+
+<div class="wrap">
+  <header class="intro">
+    <div class="stamp">States<span>8 frames · 3 dropped</span></div>
+    <h1>One card, every state it can reach.</h1>
+    <p class="lede">The connector card is built once; each frame is the same markup carrying a state class. Chrome that survives a state — glyph size, card height, action row — sits at identical offsets in every frame, so vertical scanning shows only the state&rsquo;s delta.</p>
+    <ul class="invariants">
+      <li>Connector brand color lives only inside the glyph. Atlas paper, night, lime, and red carry all state meaning.</li>
+      <li>The action row never disappears: settled states name their next step — Connect, Cancel, Pause, Disconnect, Reconnect, Retry, Request — and the loading skeleton reserves the slot.</li>
+      <li>Sync status is always mono, uppercase, and timestamped or counted.</li>
+      <li>Healthy is calm. Only pending, degraded, and loading states animate.</li>
+    </ul>
+    <div class="sequence">
+      <span class="tag">Happy path</span>
+      <span class="chip">Available</span><i>→ connect →</i>
+      <span class="chip">Authorizing</span><i>→ grant →</i>
+      <span class="chip">First sync</span><i>→ done →</i>
+      <span class="chip">Connected</span>
+    </div>
+    <div class="sequence">
+      <span class="tag">Degradation</span>
+      <span class="chip">Connected</span><i>— token expires →</i>
+      <span class="chip">Re-auth needed</span>
+      <i>&nbsp;·&nbsp;</i>
+      <span class="chip">Connected</span><i>— 3 failed syncs →</i>
+      <span class="chip">Sync paused</span>
+    </div>
+  </header>
+</div>
+
+<section class="axis" data-tone="process" aria-label="Process states, happy path">
+  <div class="axis-head"><i class="rule"></i><span>Process — happy path</span></div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">1</span><h2>Available</h2><span class="explain">Catalog entry, never connected. The affirmative action is the only primary button in the gallery.</span></div>
+    <article class="card" style="--brand:#611f69">
+      <div class="glyph" aria-hidden="true">S</div>
+      <div class="meta">
+        <h3>Slack</h3>
+        <p class="desc">Channels, DMs, and alert digests</p>
+        <div class="status"><i class="rule"></i><span>Not connected</span></div>
+      </div>
+      <div class="act"><button class="btn primary" type="button">Connect</button></div>
+    </article>
+  </div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">2</span><h2>Authorizing</h2><span class="explain">OAuth handoff is open; Atlas is waiting on the provider, not the user.</span></div>
+    <article class="card is-authorizing" aria-busy="true" style="--brand:#611f69">
+      <div class="glyph" aria-hidden="true">S</div>
+      <div class="meta">
+        <h3>Slack</h3>
+        <p class="desc">Channels, DMs, and alert digests</p>
+        <div class="status"><i class="rule"></i><span class="spinner" aria-hidden="true"></span><span role="status">Authorizing · waiting for Slack…</span></div>
+      </div>
+      <div class="act"><button class="btn" type="button">Cancel</button></div>
+    </article>
+  </div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">3</span><h2>First sync</h2><span class="explain">Initial history pull. The count and the bar promise the same progress; actions pause, never abandon.</span></div>
+    <article class="card is-syncing" aria-busy="true" style="--brand:#611f69">
+      <div class="glyph" aria-hidden="true">S</div>
+      <div class="meta">
+        <h3>Slack</h3>
+        <p class="desc">Channels, DMs, and alert digests</p>
+        <div class="status"><i class="rule"></i><span role="status">First sync · 1,204 / 3,180 messages</span></div>
+        <div class="progress" aria-hidden="true"><i></i></div>
+      </div>
+      <div class="act"><button class="btn" type="button" disabled>Pause</button></div>
+    </article>
+  </div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">4</span><h2>Connected</h2><span class="explain">The ideal state. Calm by design — a lime rule and a quiet timestamp; nothing animates.</span></div>
+    <article class="card is-connected" style="--brand:#611f69">
+      <div class="glyph" aria-hidden="true">S</div>
+      <div class="meta">
+        <h3>Slack</h3>
+        <p class="desc">Channels, DMs, and alert digests</p>
+        <div class="status"><i class="rule"></i><span>Connected · last sync 14:32</span></div>
+      </div>
+      <div class="act"><button class="btn" type="button">Disconnect</button></div>
+    </article>
+  </div>
+</section>
+
+<section class="axis" data-tone="degraded" aria-label="Process states, degraded">
+  <div class="axis-head"><i class="rule"></i><span>Process — degraded</span></div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">5</span><h2>Re-auth needed</h2><span class="explain">Token expired at the provider. Recovery is the same verb as adoption — Reconnect — so the path back is familiar.</span></div>
+    <article class="card is-reauth" style="--brand:#1b1f23">
+      <div class="glyph" aria-hidden="true">G</div>
+      <div class="meta">
+        <h3>GitHub</h3>
+        <p class="desc">Repos, pull requests, and reviews</p>
+        <div class="status"><i class="rule"></i><span>Token expired · re-authorization required</span></div>
+      </div>
+      <div class="act"><button class="btn primary" type="button">Reconnect</button></div>
+    </article>
+  </div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">6</span><h2>Sync paused</h2><span class="explain">Three consecutive failures trigger an automatic backoff with a named retry time; the user can jump the queue.</span></div>
+    <article class="card is-paused" style="--brand:#7a5af8">
+      <div class="glyph" aria-hidden="true">L</div>
+      <div class="meta">
+        <h3>Linear</h3>
+        <p class="desc">Issues, cycles, and projects</p>
+        <div class="status"><i class="rule"></i><span>Sync paused · 3 failures · retry 14:02</span></div>
+      </div>
+      <div class="act"><button class="btn primary" type="button">Retry now</button></div>
+    </article>
+  </div>
+</section>
+
+<section class="axis" data-tone="context" aria-label="Context states">
+  <div class="axis-head"><i class="rule"></i><span>Context</span></div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">7</span><h2>Disabled by admin</h2><span class="explain">The workspace gate. The card stays in the catalog — visible, dashed, desaturated — so the user learns the connector exists.</span></div>
+    <article class="card is-disabled" style="--brand:#da3e2c">
+      <div class="glyph" aria-hidden="true">N</div>
+      <div class="meta">
+        <h3>Notion</h3>
+        <p class="desc">Pages and databases</p>
+        <div class="status"><i class="rule"></i><span>Disabled by workspace admin</span></div>
+      </div>
+      <div class="act"><button class="btn" type="button">Request access</button></div>
+    </article>
+  </div>
+</section>
+
+<section class="axis" data-tone="data" aria-label="Data states">
+  <div class="axis-head"><i class="rule"></i><span>Data</span></div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="num">8</span><h2>Loading</h2><span class="explain">Catalog fetch. The skeleton preserves the glyph block, name line, status row, and action slot — the layout it will deliver.</span></div>
+    <article class="card is-loading" aria-busy="true">
+      <div class="glyph skel" aria-hidden="true"></div>
+      <div class="meta">
+        <div class="skel name"></div>
+        <div class="skel line w2"></div>
+        <div class="skel line w3"></div>
+      </div>
+      <div class="act"><span class="btn" aria-hidden="true"></span></div>
+    </article>
+  </div>
+</section>
+
+<footer class="foot">
+  <h2>Dropped states</h2>
+  <dl>
+    <div><dt>Empty catalog</dt> <dd>— the screen always ships with the built-in connectors; zero-result search is a different surface (the marketplace).</dd></div>
+    <div><dt>Offline</dt> <dd>— the catalog is cached read-only; its failure modes are already covered by the sync states.</dd></div>
+    <div><dt>Overflow</dt> <dd>— many connectors scroll the grid; the card itself has no overflow state.</dd></div>
+  </dl>
+  <p class="prod">Production adds: the OAuth popup and scope consent screen, per-connector settings drawer, live sync audit log, and the marketplace catalog. The gallery deliberately freezes one card per state instead.</p>
+</footer>
+
+</body>
+</html>

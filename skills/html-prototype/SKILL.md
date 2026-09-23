@@ -65,7 +65,7 @@ List the states before building. Include the states that the chosen scenario can
 - mobile;
 - domain-specific states from the brief.
 
-An asynchronous-looking prototype action should normally show loading, success, and failure or recovery. A collection should normally consider empty state. A gated action should show why it is disabled. Do not force irrelevant states into the main flow just to satisfy a checklist. Make omitted states explicit in the handoff.
+An asynchronous-looking prototype action should normally show loading, success, and failure or recovery. A collection should normally consider empty state. A gated action should show why it is disabled. Do not force irrelevant states into the main flow just to satisfy a checklist. Make omitted states explicit in the handoff. When the deliverable is the states themselves — all of one screen, frozen side by side for review — that gallery belongs to [`html-states`](../html-states/SKILL.md).
 
 ## Make interaction complete
 

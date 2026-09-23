@@ -699,6 +699,15 @@ export const catalogSkills: CatalogSkill[] = [
     color: "green",
   },
   {
+    id: "html-states",
+    title: "HTML states",
+    description:
+      "State galleries: every state of one screen or component as labeled frozen frames in a single file for side-by-side review.",
+    guideUrl: "/docs/prototypes",
+    sourceUrl: `${repoSource}/html-states/SKILL.md`,
+    color: "cobalt",
+  },
+  {
     id: "html-plan",
     title: "HTML plan",
     description:
