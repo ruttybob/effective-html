@@ -1,6 +1,6 @@
 ---
 name: html
-description: Create or redesign self-contained single-file HTML artifacts with a visual direction shaped by the user's brief, project, and subject. Use when HTML is the deliverable for a report, explainer, landing page, presentation, tool, mixed artifact, or broad request. This is the collection's only model-invoked skill and its implicit router. Route wireframe, prototype, mockup, state-gallery, plan, or diagram requests to the matching direct-invocation specialist (html-wireframe, html-prototype, html-states, html-plan, html-diagram), and route open palette, type, and register decisions to design-artifact. Read and follow the routed skill's SKILL.md. Do not use for ordinary application implementation when a standalone HTML file is not the deliverable.
+description: Create or redesign self-contained single-file HTML artifacts with a visual direction shaped by the user's brief, project, and subject. Use when HTML is the deliverable for a report, explainer, landing page, presentation, tool, mixed artifact, or broad request. This is the collection's only implicit router. Route clear wireframe, prototype, mockup, plan, or diagram requests to the matching direct-invocation specialist when available. Do not use for ordinary application implementation when a standalone HTML file is not the deliverable.
 ---
 
 # HTML
@@ -17,7 +17,6 @@ Use the narrowest skill that owns the main review question:
   specialist that owns fidelity, structure, or behavior.
 - Read and follow [`html-wireframe`](../html-wireframe/SKILL.md) when structure, information hierarchy, navigation, or task flow is still unsettled. It should remain visibly low fidelity and may compare two or three layout directions.
 - Read and follow [`html-prototype`](../html-prototype/SKILL.md) when the user needs a polished mockup or a working interactive flow. A mockup is the static fidelity mode inside that skill.
-- Read and follow [`html-states`](../html-states/SKILL.md) when the deliverable is every state of one screen or component shown together for side-by-side review — a state gallery.
 - Read and follow [`html-plan`](../html-plan/SKILL.md) when the artifact is primarily a plan, roadmap, implementation sequence, or rollout document whose source commitments must remain easy to verify.
 - Read and follow [`html-diagram`](../html-diagram/SKILL.md) when relationships, sequence, topology, state, hierarchy, or system behavior are the main content.
 - Continue with `html` for reports, explainers, presentations, landing pages, data stories, tools, and mixed artifacts that do not have a clearer owner.
