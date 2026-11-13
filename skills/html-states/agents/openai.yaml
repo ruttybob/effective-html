@@ -1,7 +1,0 @@
-interface:
-  display_name: "HTML States"
-  short_description: "Direct skill for HTML state galleries"
-  default_prompt: "Use $html-states to build a state gallery showing every state of this screen side by side in one HTML file."
-
-policy:
-  allow_implicit_invocation: false
