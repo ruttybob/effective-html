@@ -672,6 +672,24 @@ export const catalogSkills: CatalogSkill[] = [
     color: "cobalt",
   },
   {
+    id: "big-pics-little-words",
+    title: "Big pics, little words",
+    description:
+      "Explain the current subject in HTML with large visuals and minimal text while preserving key details.",
+    guideUrl: "/docs/big-pics-little-words",
+    sourceUrl: `${repoSource}/big-pics-little-words/SKILL.md`,
+    color: "coral",
+  },
+  {
+    id: "one-pager",
+    title: "One-pager",
+    description:
+      "Make a one-pager: one HTML page that shares an idea with teammates early, or recaps work for them, with big pictures and little words.",
+    guideUrl: "/docs/one-pager",
+    sourceUrl: `${repoSource}/one-pager/SKILL.md`,
+    color: "lilac",
+  },
+  {
     id: "design-artifact",
     title: "Design artifact",
     description:

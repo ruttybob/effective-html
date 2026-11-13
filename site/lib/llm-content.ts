@@ -11,6 +11,8 @@ const siteOrigin = "https://www.effectivehtml.com";
 const guideOrder = [
   "/docs",
   "/docs/why-html",
+  "/docs/big-pics-little-words",
+  "/docs/one-pager",
   "/docs/designing-artifacts",
   "/docs/choosing-fidelity",
   "/docs/wireframes",
